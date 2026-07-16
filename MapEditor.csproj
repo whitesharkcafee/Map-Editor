@@ -402,6 +402,9 @@
     <Compile Include="Editor\Patches\PausePatch.cs" />
     <Compile Include="ModMain.cs" />
     <Compile Include="NGUI.cs" />
+    <Compile Include="Objects\FractalObject.cs" />
+    <Compile Include="Objects\FractalObjectParser.cs" />
+    <Compile Include="Objects\FractalObjectRegistry.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

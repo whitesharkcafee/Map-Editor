@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using MapEditor.Objects;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,6 +30,10 @@ namespace MapEditor.Editor
         Vector3 dragStartScale;
         Quaternion dragStartRotation;
         #endregion
+        #region Objects
+        private string activeSpawnName = null;
+        private FractalObjectParser parser;
+        #endregion
 
         void Awake()
         {
@@ -39,6 +44,14 @@ namespace MapEditor.Editor
             editorGizmo.SetActive(false);
             editorGizmoClass = editorGizmo.AddComponent<EditorGizmo>();
             editorGizmoClass.target = null;
+            parser = gameObject.AddComponent<FractalObjectParser>();    
+            //TODO: temporary, remove when UI
+            FractalObjectRegistry.InitializeRegistry();
+        }
+        void Start()
+        {
+            // --- UI BYPASS: Arm the "Ground" object to spawn right away ---
+            SetObjectToSpawn("Ground");
         }
         void Update()
         {
@@ -58,8 +71,15 @@ namespace MapEditor.Editor
             Ray ray = editorCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
             if(Physics.Raycast(ray, out RaycastHit hit, maxDistance, clickableLayers))
             {
-                GameObject clickedObject = hit.collider.gameObject;
-                OnObjectClicked(clickedObject, hit);
+                if(!string.IsNullOrEmpty(activeSpawnName))
+                {
+                    SpawnObjectAtPosition(activeSpawnName, hit.point);
+                }
+                else
+                {
+                    GameObject clickedObject = hit.collider.gameObject;
+                    OnObjectClicked(clickedObject, hit);
+                }
             }
             else
             {
@@ -80,6 +100,36 @@ namespace MapEditor.Editor
             editorGizmo.SetActive(false);
             editorGizmoClass.target = null;
         }
+        #region Object Logic
+        private void SetObjectToSpawn(string objectDefName)
+        {
+            activeSpawnName = objectDefName;
+            Debug.Log($"[MapEditor] Ready to spawn: {activeSpawnName}. Click in the world to place it.");
+
+            // Deselect whatever we currently have selected while entering building mode
+            OnClickedMiss();
+        }
+        private void SpawnObjectAtPosition(string defName, Vector3 spawnPosition)
+        {
+            if(!FractalObjectRegistry.Objects.TryGetValue(defName, out var registeredObject))
+            {
+                Debug.LogError($"[MapEditor] Failed to spawn {defName}: not registered.");
+            }
+
+            GameObject newObj = parser.LoadAndBuildObject(registeredObject.jsonPath, registeredObject.bundle);
+
+            if(newObj != null)
+            {
+                newObj.transform.position = spawnPosition;
+                newObj.SetActive(true);
+                editorGizmo.SetActive(true);
+                editorGizmoClass.target = newObj.transform;
+
+                Debug.Log($"[MapEditor] Successfully spawned and selected {defName} at {spawnPosition}");
+            }
+
+        }
+        #endregion
         #region Gizmo Logic
         void ProcessGizmos()
         {
