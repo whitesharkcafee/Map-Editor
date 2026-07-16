@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "G:\\Coding\\FS\\MapEditor\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{340F163F-4D3C-BA8B-B363-93CF1A0450F3}|MapEditor.csproj|g:\\coding\\fs\\mapeditor\\modmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{340F163F-4D3C-BA8B-B363-93CF1A0450F3}|MapEditor.csproj|solutionrelative:modmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ModMain.cs",
+              "DocumentMoniker": "G:\\Coding\\FS\\MapEditor\\ModMain.cs",
+              "RelativeDocumentMoniker": "ModMain.cs",
+              "ToolTip": "G:\\Coding\\FS\\MapEditor\\ModMain.cs",
+              "RelativeToolTip": "ModMain.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAiwFsAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-15T20:40:53.755Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
