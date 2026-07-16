@@ -21,11 +21,13 @@ namespace MapEditor
         public const string Version = "1.0.0";
         public const string Description = "";
         public static bool isInEditor = false;
+        public static bool isInPlaytest = false;
 
         //Hot reload cannot be supported in this economy - we'll do this, just so we won't have any headaches later.
         public const bool SupportsHotReload = false;
 
         private static GameObject originalButton;
+        public static GameObject editorButton;
 
         public static void OnModLoaded()
         {
@@ -47,29 +49,41 @@ namespace MapEditor
         {
             if(scene.buildIndex == 1)
             {
+                ModMain.isInPlaytest = false;
+                ModMain.isInEditor = false;
                 // We need that to have a reference for how other buttons look. Setup() can also have tons of other stuff, which will be added later.
-                originalButton = GameObject.Find("MainMenu/Camera/Holder/Main/LargeButtons/6_LevelEditor");
-                NGUIModHelper.Setup(originalButton,null,null,GameObject.Find("MainMenu/Camera/Holder/Options"));
-                CreateEditorButton();
+                if(editorButton == null)
+                {
+                    originalButton = GameObject.Find("MainMenu/Camera/Holder/Main/LargeButtons/6_LevelEditor");
+                    NGUIModHelper.Setup(originalButton, null, null, GameObject.Find("MainMenu/Camera/Holder/Options"));
+                    CreateEditorButton();
+                }
+                else
+                {
+                    editorButton.SetActive(true);
+                }
+                EditorUIController.playtestButton?.SetActive(false);
             }
             else if(scene.buildIndex == 8)
             {
                 EditorController.OnSceneEnter();
+                EditorUIController.CreatePlaytestButton();
             }
+
         }
         static void CreateEditorButton()
         {
             // Simple as that - we create a button, parent it, rename for the correct order, destroy left-overs and reposition, so then we can manipulate to our heart's desire.
-            GameObject button = NGUIModHelper.CreateButton(originalButton.transform.parent, "Map Editor", new Vector3(0,0,0)).gameObject;
-            button.SetActive(false);
-            button.name = "6_MapEditor";
+            editorButton = NGUIModHelper.CreateButton(originalButton.transform.parent, "Map Editor", new Vector3(0,0,0)).gameObject;
+            editorButton.SetActive(false);
+            editorButton.name = "6_MapEditor";
             GameObject.Destroy(originalButton);
-            ButtonController.Destroy(button.GetComponent<ButtonController>());
-            NGUIModHelper.InsertBefore(button, "8_ExitGame");
-            button.transform.parent.GetComponent<UITable>().Reposition();
-            button.transform.parent.GetComponent<UITable>().repositionNow = true;
-            button.SetActive(true);
-            UIButtonPatcher buttonPatcher = button.GetComponent<UIButtonPatcher>();
+            ButtonController.Destroy(editorButton.GetComponent<ButtonController>());
+            NGUIModHelper.InsertBefore(editorButton, "8_ExitGame");
+            editorButton.transform.parent.GetComponent<UITable>().Reposition();
+            editorButton.transform.parent.GetComponent<UITable>().repositionNow = true;
+            editorButton.SetActive(true);
+            UIButtonPatcher buttonPatcher = editorButton.GetComponent<UIButtonPatcher>();
             buttonPatcher.onClick += OnEditorOpenButtonClicked;
             CreateEditorPanel();
         }

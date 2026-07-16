@@ -13,6 +13,7 @@ namespace MapEditor.Editor
     public class EditorController : MonoBehaviour
     {
         public static EditorController Instance { get; private set; }
+        private static GameObject editorCamera;
         void Awake()
         {
             Instance = this;
@@ -22,7 +23,7 @@ namespace MapEditor.Editor
         {
             //When we load into the empty scene, the first thing we should do is turn off the player. The player, well, who would've guessed, shouldn't be
             //there until we start playtesting.
-            GameObject editorCamera = new GameObject("EditorCamera");
+            editorCamera = new GameObject("EditorCamera");
             Camera camera_component = editorCamera.AddComponent<Camera>();
             camera_component.clearFlags = CameraClearFlags.Skybox;
             camera_component.cullingMask = ~((1 << LayerMask.NameToLayer("InGame2DUI")) | (1 << LayerMask.NameToLayer("2D GUI")));
@@ -33,7 +34,19 @@ namespace MapEditor.Editor
             editorCamera.AddComponent<AudioListener>();
             NativeModLoader.Instance.RunModCoroutine(DisableControls());
         }
-        public static IEnumerator DisableControls()
+        public static void PlayFromSpawnPoint()
+        {
+            //We'd assume there is a spawnpoint somewhere on the level, but since we don't have much right now, let's just assume 0 0 0 is the spawnpoint.
+            Vector3 spawnPoint = new Vector3(0, 10, 0);
+            Controls.Instance.gameObject.transform.position = spawnPoint;
+            editorCamera.SetActive(false);
+            Controls.Instance.gameObject.SetActive(true);
+            InGameUIManager.Instance.gameObject.SetActive(true);
+            ModMain.isInPlaytest = true;
+            ModMain.isInEditor = false;
+            MenuController.GetInstance().ResumeButtonPressed();
+        }
+        static IEnumerator DisableControls()
         {
             yield return new WaitForSeconds(.1f);
             Controls.Instance.gameObject.SetActive(false);
