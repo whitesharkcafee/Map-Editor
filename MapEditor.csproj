@@ -396,6 +396,7 @@
   <ItemGroup>
     <Compile Include="Editor\CameraController.cs" />
     <Compile Include="Editor\EditorController.cs" />
+    <Compile Include="Editor\EditorGizmo.cs" />
     <Compile Include="Editor\EditorUIController.cs" />
     <Compile Include="Editor\Patches\LocalizationPatches.cs" />
     <Compile Include="Editor\Patches\PausePatch.cs" />

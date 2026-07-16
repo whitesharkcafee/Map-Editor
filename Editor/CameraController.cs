@@ -23,11 +23,18 @@ namespace MapEditor.Editor
 
         void Update()
         {
-            HandleMouse();
-            if(_isLooking)
+            if(!MenuController.IsGamePaused)
             {
-                HandleRotation();
-                HandleMovement();
+                HandleMouse();
+                if (_isLooking)
+                {
+                    HandleRotation();
+                    HandleMovement();
+                }
+            }
+            if(MenuController.IsGamePaused)
+            {
+                _isLooking = false;
             }
         }
 

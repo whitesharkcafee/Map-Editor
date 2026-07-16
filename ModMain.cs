@@ -66,6 +66,8 @@ namespace MapEditor
             }
             else if(scene.buildIndex == 8)
             {
+                GameObject editor = new GameObject("Editor");
+                editor.AddComponent<EditorController>();
                 EditorController.OnSceneEnter();
                 EditorUIController.CreatePlaytestButton();
             }
@@ -97,8 +99,6 @@ namespace MapEditor
             // for now - opens the modder scene. Scene index = 8.
             bool ok = ModdingTools.LoadModdingScene();
             Debug.Log("[MapEditor] LoadModdingScene returned " + ok);
-            GameObject editor = new GameObject("Editor");
-            editor.AddComponent<EditorController>();
         }
     }
 }

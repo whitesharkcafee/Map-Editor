@@ -14,10 +14,59 @@ namespace MapEditor.Editor
     {
         public static EditorController Instance { get; private set; }
         private static GameObject editorCamera;
+
+        #region Raycasting for selecting objects
+        private float maxDistance = 1000f;
+        private LayerMask clickableLayers = ~0;
+        #endregion
+        #region Gizmo
+        private GameObject editorGizmo;
+        private EditorGizmo editorGizmoClass;
+        #endregion
+
         void Awake()
         {
             Instance = this;
             ModMain.isInEditor = true;
+            clickableLayers = ~(1 << LayerMask.NameToLayer("Ignore Raycast"));
+            editorGizmo = new GameObject("EditorGizmo");
+            editorGizmo.SetActive(false);
+            editorGizmoClass = editorGizmo.AddComponent<EditorGizmo>();
+            editorGizmoClass.target = null;
+        }
+        void Update()
+        {
+            if(Input.GetMouseButtonDown(0) && !MenuController.IsGamePaused)
+            {
+                ProcessClick();
+            }
+        }
+        void ProcessClick()
+        {
+            Ray ray = editorCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+            if(Physics.Raycast(ray, out RaycastHit hit, maxDistance, clickableLayers))
+            {
+                GameObject clickedObject = hit.collider.gameObject;
+                OnObjectClicked(clickedObject, hit);
+            }
+            else
+            {
+                OnClickedMiss();
+            }
+        }
+        void OnObjectClicked(GameObject obj, RaycastHit hit)
+        {
+            Debug.Log($"[MapEditor] Clicked on {obj.name} at {hit.point}, normal {hit.normal}.");
+            Vector3 center = GetWorldBoundsCenter(obj.GetComponent<MeshRenderer>());
+            editorGizmo.SetActive(true);
+            editorGizmoClass.target = obj.transform;
+
+        }
+        void OnClickedMiss()
+        {
+            Debug.Log($"[MapEditor] Miss.");
+            editorGizmo.SetActive(false);
+            editorGizmoClass.target = null;
         }
         public static void OnSceneEnter()
         {
@@ -52,6 +101,14 @@ namespace MapEditor.Editor
             Controls.Instance.gameObject.SetActive(false);
             yield return new WaitForSeconds(.5f);
             InGameUIManager.Instance.gameObject.SetActive(false);
+        }
+        private Vector3 GetWorldBoundsCenter(MeshRenderer meshRenderer)
+        {
+            if (meshRenderer != null)
+            {
+                return meshRenderer.bounds.center;
+            }
+            return transform.position;
         }
     }
 }
