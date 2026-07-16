@@ -9,6 +9,6 @@ Main features (will grow in future):
  2. Real-Time Playtesting - system first seen in [official Level Editor footage](https://www.youtube.com/watch?v=ASMXYud0uS8)
  3. No more garbage from Chapter 4 - Map Editor uses Modding Scene, completely empty, no more slow loading and horrible performance.
  4. No more JSON - Map Editor uses binary serialization/deserialization for saving the levels (for now it's JSON, in future, it will be binary), allowing for even better performance.
-
+ 5. Real-Time Editing - instead of freezing the game completely, Map Editor allows the game to still run like usual even mid-editing, allowing you to dynamically preview the changes without the need in playtesting.
 
 Map Editor is licensed with GNU GPL v3. If you want to use the code from the mod, please don't forget to mention the authors and make it open source as well. Thank you!
