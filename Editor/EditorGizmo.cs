@@ -39,7 +39,7 @@ namespace MapEditor.Editor
         [Tooltip("Keep the gizmo a constant screen size regardless of camera distance.")]
         public bool constantScreenSize = true;
         [Range(0.5f, 3f)]
-        public float lineThicknessHint = 1f; // GL lines are 1px; kept for future use with meshes
+        public float lineThicknessHint = 2f; // GL lines are 1px; kept for future use with meshes
 
         public Color axisColorX = new Color(0.85f, 0.15f, 0.15f);
         public Color axisColorY = new Color(0.15f, 0.75f, 0.15f);
