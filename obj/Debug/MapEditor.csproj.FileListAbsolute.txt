@@ -1,4 +1,0 @@
-C:\Users\Oleh\AppData\LocalLow\Haze Games\Fractal Space MOD\Mods\MapEditor.dll
-G:\Coding\FS\MapEditor\obj\Debug\MapEditor.csproj.AssemblyReference.cache
-G:\Coding\FS\MapEditor\obj\Debug\MapEditor.csproj.CoreCompileInputs.cache
-G:\Coding\FS\MapEditor\obj\Debug\MapEditor.dll
