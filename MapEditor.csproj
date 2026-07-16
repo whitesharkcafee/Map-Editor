@@ -394,8 +394,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Editor\CameraController.cs" />
+    <Compile Include="Editor\EditorController.cs" />
+    <Compile Include="Editor\Patches\PausePatch.cs" />
     <Compile Include="ModMain.cs" />
     <Compile Include="NGUI.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
